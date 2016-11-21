@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io').listen(http);
-var $ = require('jQuery');
+var $ = require('jquery');
 
 var connectionCount = 0;
 function craftServerListItem(message){
