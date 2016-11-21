@@ -12,6 +12,13 @@ require("jsdom").env("", function(err, window) {
 });
 
 var connectionCount = 0;
+function craftServerListItem(message){
+    var div = $('<div>');
+    var nameDiv = $('<div>').text("Message from the server").addClass("servername");
+    var msgDiv = $('<div>').text(message);
+    div.append(nameDiv).append(msgDiv);
+    return $('<li>').append(div).addClass("serverListItem");
+}
 
 app.use(express.static('static'));
 
@@ -26,11 +33,13 @@ app.get('*', function(req, res) {
 io.on('connection', function (socket) {
     console.log('New user connected');
     connectionCount ++;
-    io.emit('svrmsg', {name:"Message from the server", msg:"User connected - Connected users: " + connectionCount, trulyServer: true})
+    
+    io.emit('svrmsg', craftServerListItem("User connected - Connected users: " + connectionCount)); // {msg:"User connected - Connected users: " + connectionCount, trulyServer: true}
+    
     socket.on('disconnect', function () {
         console.log('User disconnected');
         connectionCount --;
-        io.emit('svrmsg', {name:"Message from the server", msg:"User disconnected - Connected users: " + connectionCount, trulyServer: true})
+        io.emit('svrmsg', craftServerListItem("User disconnected - Connected users: " + connectionCount)); 
     });
     socket.on('chat message', function(msg){
         console.log(msg['name'] + ": " + msg['msg']);
