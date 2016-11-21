@@ -15,6 +15,9 @@ $('form').submit(function () {
     $('#m').val('');
     return false;
 });
+socket.on('svrmsg', function (msg) {
+   $('#messages'.append(msg)); 
+});
 socket.on('chat message', function (msg) {
     var div = $('<div>');
     var nameDiv = $('<div>').text(msg['name']);
