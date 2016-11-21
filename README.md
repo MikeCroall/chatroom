@@ -1,2 +1,2 @@
 # chatroom
-A simple chatroom written with NodeJS and Socket.io
+A simple (and somewhat insecure) chatroom written with NodeJS and Socket.io
