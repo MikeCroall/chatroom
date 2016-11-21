@@ -2,6 +2,14 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io').listen(http);
+require("jsdom").env("", function(err, window) {
+    if (err) {
+        console.error(err);
+        return;
+    }
+
+    var $ = require("jquery")(window);
+});
 
 var connectionCount = 0;
 
@@ -18,11 +26,11 @@ app.get('*', function(req, res) {
 io.on('connection', function (socket) {
     console.log('New user connected');
     connectionCount ++;
-    io.emit('chat message', {name:"Message from the server", msg:"Connected users: " + connectionCount, trulyServer: true})
+    io.emit('svrmsg', {name:"Message from the server", msg:"User connected - Connected users: " + connectionCount, trulyServer: true})
     socket.on('disconnect', function () {
         console.log('User disconnected');
         connectionCount --;
-        io.emit('chat message', {name:"Message from the server", msg:"Connected users: " + connectionCount, trulyServer: true})
+        io.emit('svrmsg', {name:"Message from the server", msg:"User disconnected - Connected users: " + connectionCount, trulyServer: true})
     });
     socket.on('chat message', function(msg){
         console.log(msg['name'] + ": " + msg['msg']);
