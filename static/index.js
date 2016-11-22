@@ -15,24 +15,24 @@ $('form').submit(function () {
     $('#m').val('');
     return false;
 });
-socket.on('chat message', function (msg) {
+socket.on('server message', function(msg) {
     var div = $('<div>');
     var nameDiv = $('<div>').text(msg['name']);
-    var server = false;
-    try{
-        if (msg['name'] == "Message from the server"){
-            if(msg['trulyServer']){
-                server = true;
-            }
-        }
-    } catch(ex) {}
-    nameDiv.addClass(server ? "servername" : "username");
+    nameDiv.addClass("servername");
     var msgDiv = $('<div>').text(msg['msg']);
     div.append(nameDiv).append(msgDiv);
     var listItem = $('<li>').append(div);
-    if(server){
-        listItem.addClass("serverListItem");
-    }
+    listItem.addClass("serverListItem");
+    $('#messages').append(listItem);
+    window.scrollTo(0, document.body.scrollHeight);
+});
+socket.on('chat message', function (msg) {
+    var div = $('<div>');
+    var nameDiv = $('<div>').text(msg['name']);
+    nameDiv.addClass("username");
+    var msgDiv = $('<div>').text(msg['msg']);
+    div.append(nameDiv).append(msgDiv);
+    var listItem = $('<li>').append(div);
     $('#messages').append(listItem);
     window.scrollTo(0, document.body.scrollHeight);
 });
