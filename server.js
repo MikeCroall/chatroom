@@ -18,11 +18,11 @@ app.get('*', function(req, res) {
 io.on('connection', function (socket) {
     console.log('New user connected');
     connectionCount ++;
-    io.emit('chat message', {name:"Message from the server", msg:"Connected users: " + connectionCount, trulyServer: true})
+    io.emit('server message', {name:"Message from the server", msg:"User connected - Connected users: " + connectionCount})
     socket.on('disconnect', function () {
         console.log('User disconnected');
         connectionCount --;
-        io.emit('chat message', {name:"Message from the server", msg:"Connected users: " + connectionCount, trulyServer: true})
+        io.emit('server message', {name:"Message from the server", msg:"User disconnected - Connected users: " + connectionCount})
     });
     socket.on('chat message', function(msg){
         console.log(msg['name'] + ": " + msg['msg']);
